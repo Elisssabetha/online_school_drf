@@ -6,5 +6,6 @@ from users.serializers import UserSerializer
 
 
 class UserViewSet(ModelViewSet):
+    """Viewset for User model. To create need to enter 'email' and 'password' """
     serializer_class = UserSerializer
     queryset = User.objects.all()

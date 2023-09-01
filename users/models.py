@@ -5,6 +5,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class User(AbstractUser):
+    """Stores a single user"""
     username = None
 
     email = models.EmailField(unique=True, verbose_name='Email')
