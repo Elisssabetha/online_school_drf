@@ -9,6 +9,6 @@ class IsOwner(BasePermission):
 
 class IsModerator(BasePermission):
     def has_permission(self, request, view):
-        if request.user.is_superuser:
-            return True
-        return request.user.groups.filter(name="Moderator").exists() and request.method not in ['POST', 'DELETE']
+        if request.method in ['POST', 'DELETE'] and request.user.groups.filter(name="Moderator").exists():
+            return False
+        return True

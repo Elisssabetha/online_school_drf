@@ -13,21 +13,47 @@ from users.permissions import IsOwner, IsModerator
 class CourseViewSet(ModelViewSet):
     """Viewset for Course model"""
     serializer_class = CourseSerializer
-    queryset = Course.objects.all()
-    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+
+    # permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+
+    def perform_create(self, serializer):
+        new_lesson = serializer.save()
+        new_lesson.owner = self.request.user
+        new_lesson.save()
+
+    def get_queryset(self):
+        if self.request.user.groups.filter(name="Moderator").exists():
+            return Course.objects.all()
+        return Course.objects.filter(owner=self.request.user)
+
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [IsAuthenticated & IsModerator]
+        else:
+            permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+        return [permission() for permission in permission_classes]
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
     """View to create a lesson"""
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated, IsModerator]
+    permission_classes = [IsAuthenticated & IsModerator]
+
+    def perform_create(self, serializer):
+        new_lesson = serializer.save()
+        new_lesson.owner = self.request.user
+        new_lesson.save()
 
 
 class LessonListAPIView(generics.ListAPIView):
     """View to get a list of lessons"""
     serializer_class = LessonSerializer
-    queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+
+    def get_queryset(self):
+        if self.request.user.groups.filter(name="Moderator").exists():
+            return Lesson.objects.all()
+        return Lesson.objects.filter(owner=self.request.user)
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
