@@ -14,40 +14,40 @@ class CourseViewSet(ModelViewSet):
     """Viewset for Course model"""
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    permission_classes = [IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
     """View to create a lesson"""
     serializer_class = LessonSerializer
-    permission_classes = [IsModerator]
+    permission_classes = [IsAuthenticated, IsModerator]
 
 
 class LessonListAPIView(generics.ListAPIView):
     """View to get a list of lessons"""
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     """View to get a singe lesson by id"""
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     """View to edit a lesson by id"""
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     """View to delete a lesson by id"""
     queryset = Lesson.objects.all()
-    permission_classes = [IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
 
 
 class PaymentListAPIView(generics.ListAPIView):
@@ -59,4 +59,4 @@ class PaymentListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('course', 'lesson', 'payment_method')
     ordering_fields = ('payment_date',)
-    permission_classes = [IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
