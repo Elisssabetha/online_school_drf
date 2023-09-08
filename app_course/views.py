@@ -66,14 +66,20 @@ class LessonRetrieveAPIView(generics.RetrieveAPIView):
 class LessonUpdateAPIView(generics.UpdateAPIView):
     """View to edit a lesson by id"""
     serializer_class = LessonSerializer
-    queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated & IsOwner | IsModerator]
+
+    def get_queryset(self):
+        if self.request.user.groups.filter(name="Moderator").exists():
+            return Lesson.objects.all()
+        return Lesson.objects.filter(owner=self.request.user)
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     """View to delete a lesson by id"""
-    queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+
+    def get_queryset(self):
+        return Lesson.objects.filter(owner=self.request.user)
 
 
 class PaymentListAPIView(generics.ListAPIView):
