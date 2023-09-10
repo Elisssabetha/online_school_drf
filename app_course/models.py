@@ -1,7 +1,7 @@
 from django.db import models
 
 from django.conf import settings
-from users.models import NULLABLE
+from users.models import NULLABLE, User
 
 
 class Course(models.Model):
@@ -35,6 +35,7 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'Урок'
         verbose_name_plural = 'Уроки'
+        ordering = ('id',)
 
 
 class Payment(models.Model):
@@ -60,3 +61,9 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'Платеж'
         verbose_name_plural = 'Платежи'
+
+
+class Subscription(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    status = models.BooleanField(default=False, verbose_name='Статус подписки')
