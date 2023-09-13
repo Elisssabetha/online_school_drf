@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase
 from django.urls import reverse
 
-from app_course.models import Course
+from app_course.models import Course, Lesson, Subscription
 from users.models import User
 from rest_framework import status
 
@@ -65,12 +65,13 @@ class LessonTestCase(APITestCase):
 
     def test_retrieve_lesson(self):
         self.test_create_lesson()
-        response = self.client.get('/lesson/1/')
+        pk = Lesson.objects.all().latest('pk').pk
+        response = self.client.get(f'/lesson/{pk}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             response.json(),
             {
-                "id": 1,
+                "id": pk,
                 "name": "Test",
                 "description": "test description",
                 "preview": None,
@@ -82,12 +83,13 @@ class LessonTestCase(APITestCase):
 
     def test_update_lesson(self):
         self.test_create_lesson()
-        response = self.client.patch('/lesson/update/1/', {'name': 'Test changed'})
+        pk = Lesson.objects.all().latest('pk').pk
+        response = self.client.patch(f'/lesson/update/{pk}/', {'name': 'Test changed'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             response.json(),
             {
-                "id": 1,
+                "id": pk,
                 "name": "Test changed",
                 "description": "test description",
                 "preview": None,
@@ -99,7 +101,8 @@ class LessonTestCase(APITestCase):
 
     def test_destroy_lesson(self):
         self.test_create_lesson()
-        response = self.client.delete('/lesson/delete/1/')
+        pk = Lesson.objects.all().latest('pk').pk
+        response = self.client.delete(f'/lesson/delete/{pk}/')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
@@ -139,5 +142,6 @@ class SubscriptionTestCase(APITestCase):
 
     def test_destroy_subscription(self):
         self.test_create_subscription()
-        response = self.client.delete('/subscription/delete/1/')
+        pk = Subscription.objects.all().latest('pk').pk
+        response = self.client.delete(f'/subscription/delete/{pk}/')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
