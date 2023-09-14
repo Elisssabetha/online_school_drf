@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics
-from app_course.models import Course, Lesson, Payment
-from app_course.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
+from app_course.models import Course, Lesson, Payment, Subscription
+from app_course.pagination import CourseLessonPaginator
+from app_course.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
@@ -13,8 +14,9 @@ from users.permissions import IsOwner, IsModerator
 class CourseViewSet(ModelViewSet):
     """Viewset for Course model"""
     serializer_class = CourseSerializer
+    pagination_class = CourseLessonPaginator
 
-    # permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsOwner | IsModerator]
 
     def perform_create(self, serializer):
         new_lesson = serializer.save()
@@ -48,6 +50,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     """View to get a list of lessons"""
     serializer_class = LessonSerializer
+    pagination_class = CourseLessonPaginator
     permission_classes = [IsAuthenticated, IsOwner | IsModerator]
 
     def get_queryset(self):
@@ -92,3 +95,13 @@ class PaymentListAPIView(generics.ListAPIView):
     filterset_fields = ('course', 'lesson', 'payment_method')
     ordering_fields = ('payment_date',)
     permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    """View to create a subscription"""
+    serializer_class = SubscriptionSerializer
+
+
+class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+    """View to delete a subscription by id"""
+    queryset = Subscription.objects.all()
