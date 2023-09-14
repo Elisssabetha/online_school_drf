@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
+    'drf_yasg',
 
     'users.apps.UsersConfig',
     'app_course.apps.AppCourseConfig',
@@ -162,3 +163,5 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1)
 }
+
+STRIPE_API_KEY = get_env_values('STRIPE_API_KEY')
