@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework_simplejwt',
     'drf_yasg',
+    'django_celery_beat',
 
     'users.apps.UsersConfig',
     'app_course.apps.AppCourseConfig',
@@ -165,3 +166,12 @@ SIMPLE_JWT = {
 }
 
 STRIPE_API_KEY = get_env_values('STRIPE_API_KEY')
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = get_env_values('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_env_values('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = True
