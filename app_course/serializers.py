@@ -16,15 +16,15 @@ class CourseSerializer(serializers.ModelSerializer):
     lessons_count = serializers.SerializerMethodField()
     lessons = LessonSerializer(source='lesson', many=True, read_only=True)
     subscription_status = serializers.SerializerMethodField()
-    payment_link = serializers.SerializerMethodField()
+    # payment_link = serializers.SerializerMethodField()
 
     def get_lessons_count(self, instance):
         """qty of lessons in the course"""
         return instance.lesson.count()
 
-    def get_payment_link(self, instance):
-        payment_data = get_payment_link(instance)
-        return payment_data['url']
+    # def get_payment_link(self, instance):
+    #     payment_data = get_payment_link(instance)
+    #     return payment_data['url']
 
     def get_subscription_status(self, instance):
         request = self.context.get('request')

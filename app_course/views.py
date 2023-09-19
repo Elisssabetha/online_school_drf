@@ -8,6 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
+from app_course.tasks import send_email_course_update
 from users.permissions import IsOwner, IsModerator
 
 
@@ -22,6 +23,11 @@ class CourseViewSet(ModelViewSet):
         new_lesson = serializer.save()
         new_lesson.owner = self.request.user
         new_lesson.save()
+
+    def perform_update(self, serializer):
+        updated_course = serializer.save()
+        send_email_course_update.delay(updated_course.pk)
+
 
     def get_queryset(self):
         if self.request.user.groups.filter(name="Moderator").exists():
