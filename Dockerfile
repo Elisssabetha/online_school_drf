@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Команда для запуска приложения при старте контейнера
-CMD ["python", "manage.py", "runserver"]
+#CMD ["python", "manage.py", "runserver"]

@@ -5,14 +5,28 @@
 
 ### Docker:
 #### Для создания Docker-image:
-docker build -t "name image"
+
+`docker build -t <name image>`
+
 
 #### Запуск контейнера:
-docker run "name image"
+
+
+`docker run <name image>`
+
+
+
+#### Запуск через Docker Compose
+
+`docker-compose up -d --build`
+
+
+Для остановки:
+
+`docker-compose down`
+
+
 <hr>
-
-
-
 
 Команда для заполнения БД: fill_bd
 

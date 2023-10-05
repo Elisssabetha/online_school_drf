@@ -99,7 +99,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'online_school_project',
         'USER': 'postgres',
-        'PASSWORD': get_env_values('db_password')
+        'PASSWORD': get_env_values('db_password'),
+        'HOST': 'db'
     }
 }
 
@@ -167,7 +168,7 @@ SIMPLE_JWT = {
 
 STRIPE_API_KEY = get_env_values('STRIPE_API_KEY')
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
 
 EMAIL_HOST = 'smtp.mail.ru'
