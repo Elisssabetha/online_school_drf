@@ -38,7 +38,7 @@ SECRET_KEY = 'django-insecure-^@p&fc16m92l2glc9nl6&0#sp&q)w(z!wcuco(up_c9rpmr0^u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -99,7 +99,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'online_school_project',
         'USER': 'postgres',
-        'PASSWORD': get_env_values('db_password')
+        'PASSWORD': get_env_values('db_password'),
+        'HOST': 'db'
     }
 }
 
@@ -167,11 +168,13 @@ SIMPLE_JWT = {
 
 STRIPE_API_KEY = get_env_values('STRIPE_API_KEY')
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = get_env_values('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = get_env_values('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
+
+
